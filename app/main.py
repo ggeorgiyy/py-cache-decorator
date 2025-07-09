@@ -4,9 +4,10 @@ from typing import Any, Callable, Dict, Tuple
 
 def cache (func: Callable) -> Any:
     func_cache: Dict[Tuple, Any] = {}
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs) -> Any:
+
         cache_key = (args, tuple(sorted(kwargs.items())))
-        if args in cache_dict:
+        if args in func_cache:
             print("Getting from cache")
             return func_cache[cache_key]
         else:
@@ -15,4 +16,5 @@ def cache (func: Callable) -> Any:
             func_cache[cache_key] = result
             return result
     return wrapper
+
 
