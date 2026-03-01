@@ -1,18 +1,21 @@
-from typing import Any, Callable, Dict, Tuple
+def cache(func):
+    # This dictionary is local to the function being decorated
+    stored_results = {}
 
-
-def cache(func: Callable) -> Any:
-    func_cache: Dict[Tuple, Any] = {}
-
-    def wrapper(*args, **kwargs) -> Any:
-
-        cache_key = (args, tuple(sorted(kwargs.items())))
-        if args in func_cache:
+    def wrapper(*args):
+        # Using the arguments tuple as a key in our dictionary
+        if args in stored_results:
             print("Getting from cache")
-            return func_cache[cache_key]
-        else:
-            print("Calculating new result")
-            result = func(*args, **kwargs)
-            func_cache[cache_key] = result
-            return result
+            return stored_results[args]
+        
+        print("Calculating new result")
+        result = func(*args)
+        stored_results[args] = result
+        return result
+
+    # Manually copying basic metadata so the function 
+    # doesn't just look like "wrapper"
+    wrapper.__name__ = func.__name__
+    wrapper.__doc__ = func.__doc__
+    
     return wrapper
