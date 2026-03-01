@@ -2,7 +2,7 @@ def cache(func: callable) -> any:
     # This dictionary is local to the function being decorated
     stored_results = {}
 
-    def wrapper(*args: any):
+    def wrapper(*args: any) -> any:
         # Using the arguments tuple as a key in our dictionary
         if args in stored_results:
             print("Getting from cache")
